@@ -1,10 +1,28 @@
 <template>
   <article>
     <IndexView
+      v-if="actions.isIndex"
       v-bind:tasks="tasks"
       v-on:action-new="showNewForm()"
       v-on:action-edit="showEditForm($event.id)"
       v-on:action-destroy="destroyTask($event.id)"
+    />
+    <FormView
+      v-if="actions.isNew"
+      dispatch-event="actionCreate"
+      page-name="新しいタスク"
+      button-name="登録する"
+      v-on:action-create="createTask($event.attrs)"
+    />
+    <FormView
+      v-if="actions.isEdit"
+      dispatch-event="actionUpdate"
+      button-name="更新する"
+      v-bind="{
+        pageName: editTask.title,
+        task: editTask,
+      }"
+      v-on:action-update="updateTask($event.id, $event.attrs)"
     />
   </article>
 </template>
@@ -13,14 +31,45 @@
 import { reactive, onMounted } from "vue";
 import Task from "@/models/task.js";
 import IndexView from "@/views/tasks/IndexView.vue";
+import FormView from "@/views/tasks/FormView.vue";
 
-const showIndex = () => {};
-const showNewForm = () => {};
+const actions = reactive({
+  isIndex: true,
+  isNew: false,
+  isEdit: false,
+});
+const toggleGroup = (onKey, obj) => {
+  Object.entries(obj).forEach(([key]) => {
+    obj[key] = false;
+  });
+  obj[onKey] = true;
+};
+const showNewForm = () => {
+  toggleGroup("isNew", actions);
+};
+const editTask = reactive({});
 const showEditForm = (taskId) => {
+  const task = tasks[taskId];
+  Object.entries(task.attrs).forEach(([key, value]) => {
+    editTask[key] = value;
+  });
+
+  toggleGroup("isEdit", actions);
+};
+const showIndex = () => {
+  toggleGroup("isIndex", actions);
 };
 const createTask = (attrs) => {
+  const task = Task.create(attrs);
+  tasks[task.id] = task;
+
+  showIndex();
 };
 const updateTask = (taskId, attrs) => {
+  const task = tasks[taskId];
+  task.update(attrs);
+
+  showIndex();
 };
 const destroyTask = (taskId) => {
   const task = tasks[taskId];

@@ -25,19 +25,22 @@ class Task {
   }
 
   save() {
-    localStorage.setItem(
-      this.id,
-      JSON.stringify({
-        id: this.id,
-        title: this.title,
-        description: this.description,
-      })
-    );
+    localStorage.setItem(this.id, JSON.stringify(this.attrs));
+  }
+
+  get attrs() {
+    return {
+      id: this.id,
+      title: this.title,
+      description: this.description,
+    };
   }
 
   static create(attrs) {
     const task = new Task(attrs);
     task.save();
+
+    return task;
   }
 
   update(attrs) {

@@ -15,7 +15,7 @@
           <p>{{ task.description }}</p>
         </td>
         <td>
-          <button @click="$emit('actionEdit', { id })">Edit📝</button>
+          <button v-on:click="$emit('actionEdit', { id })">Edit📝</button>
         </td>
       </tr>
     </tbody>
@@ -27,7 +27,7 @@
   </section>
 
   <footer>
-    <button @click="$emit('actionNew')">New➕</button>
+    <button v-on:click="$emit('actionNew')">New➕</button>
   </footer>
 </template>
 
