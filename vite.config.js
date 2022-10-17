@@ -11,4 +11,10 @@ export default defineConfig({
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },
+  // See: https://github.com/microsoft/WSL/issues/4739
+  server: {
+    watch: {
+      usePolling: true,
+    },
+  },
 });
