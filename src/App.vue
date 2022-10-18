@@ -1,18 +1,18 @@
 <template>
   <article>
     <IndexView
-      v-if="actions.isIndex"
+      v-if="toggle.isIndex"
       v-bind:tasks="tasks"
       v-on:action-new="showNewForm()"
       v-on:action-edit="showEditForm($event.id)"
       v-on:action-destroy="destroyTask($event.id)"
     />
     <NewFormView
-      v-if="actions.isNew"
+      v-if="toggle.isNew"
       v-on:action-create="createTask($event.attrs)"
     />
     <EditFormView
-      v-if="actions.isEdit"
+      v-if="toggle.isEdit"
       v-bind:task="editTask"
       v-on:action-update="updateTask($event.id, $event.attrs)"
     />
@@ -30,62 +30,58 @@ import NewFormView from "@/components/NewFormView.vue";
 <script setup>
 import { reactive, onMounted } from "vue";
 import { useToast } from "primevue/usetoast";
+import { useToggleGroup } from "@/composables/useToggleGroup.js";
 import Task from "@/models/task.js";
 
-const toast = useToast();
-const actions = reactive({
-  isIndex: true,
-  isNew: false,
-  isEdit: false,
-});
-const toggleGroup = (onKey, obj) => {
-  Object.entries(obj).forEach(([key]) => {
-    obj[key] = false;
-  });
-  obj[onKey] = true;
-};
+const toggle = useToggleGroup(["index", "new", "edit"]);
 const showNewForm = () => {
-  toggleGroup("isNew", actions);
+  toggle.isNew = true;
 };
+
 const editTask = reactive({});
 const showEditForm = (taskId) => {
   const task = tasks[taskId];
-  Object.entries(task.attrs).forEach(([key, value]) => {
+  const attrs = Object.entries(task.attrs);
+  attrs.forEach(([key, value]) => {
     editTask[key] = value;
   });
 
-  toggleGroup("isEdit", actions);
+  toggle.isEdit = true;
 };
+
 const showIndex = () => {
-  toggleGroup("isIndex", actions);
+  toggle.isIndex = true;
 };
+
 const createTask = (attrs) => {
   const task = Task.create(attrs);
   tasks[task.id] = task;
 
   showIndex();
 };
+
 const updateTask = (taskId, attrs) => {
   const task = tasks[taskId];
   task.update(attrs);
 
   showIndex();
 };
+
+const toast = useToast();
 const destroyTask = (taskId) => {
   const task = tasks[taskId];
   task.destroy();
   delete tasks[taskId];
-  toast.add({
-    summary: `${task.title || "タスク"} を完了にしました`,
-    life: 3000,
-  });
+
+  const message = `${task.title || "タスク"} を完了にしました`;
+  toast.add({ summary: message, life: 3000 });
 };
 
 const tasks = reactive({});
-const loadTask = () => {
+onMounted(() => {
   Task.all().forEach((task) => {
     tasks[task.id] = task;
   });
-};
-onMounted(loadTask);
+  showIndex();
+});
 </script>
