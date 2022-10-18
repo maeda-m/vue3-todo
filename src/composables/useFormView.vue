@@ -6,7 +6,7 @@
 
   <button
     v-on:click="
-      $emit(props.dispatchEvent, {
+      emits(props.dispatchEvent, {
         id,
         attrs: {
           title,
@@ -19,13 +19,21 @@
   </button>
 </template>
 
+<script>
+const AVAILABLE_EMITS = ["actionCreate", "actionUpdate"];
+</script>
+
 <script setup>
 import { unref } from "vue";
 
+const emits = defineEmits(AVAILABLE_EMITS);
 const props = defineProps({
   dispatchEvent: {
     type: String,
     required: true,
+    validator(value) {
+      return AVAILABLE_EMITS.includes(value);
+    },
   },
   pageName: {
     type: String,
@@ -47,6 +55,5 @@ const props = defineProps({
   },
 });
 
-const task = unref(props.task);
-const { id, title, description } = task;
+const { id, title, description } = unref(props.task);
 </script>

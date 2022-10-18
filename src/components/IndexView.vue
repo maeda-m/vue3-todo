@@ -7,7 +7,7 @@
           <input
             type="radio"
             v-bind:id="id"
-            v-on:input="$emit('actionDestroy', { id })"
+            v-on:input="emits('actionDestroy', { id })"
           />
         </td>
         <td>
@@ -15,7 +15,7 @@
           <p>{{ task.description }}</p>
         </td>
         <td>
-          <button v-on:click="$emit('actionEdit', { id })">Edit📝</button>
+          <button v-on:click="emits('actionEdit', { id })">Edit📝</button>
         </td>
       </tr>
     </tbody>
@@ -27,14 +27,14 @@
   </section>
 
   <footer>
-    <button v-on:click="$emit('actionNew')">New➕</button>
+    <button v-on:click="emits('actionNew')">New➕</button>
   </footer>
 </template>
 
 <script setup>
 import { computed } from "vue";
 
-defineEmits(["actionNew", "actionEdit", "actionDestroy"]);
+const emits = defineEmits(["actionNew", "actionEdit", "actionDestroy"]);
 const props = defineProps({
   tasks: {
     type: Object,

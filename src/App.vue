@@ -7,21 +7,13 @@
       v-on:action-edit="showEditForm($event.id)"
       v-on:action-destroy="destroyTask($event.id)"
     />
-    <FormView
+    <NewFormView
       v-if="actions.isNew"
-      dispatch-event="actionCreate"
-      page-name="新しいタスク"
-      button-name="登録する"
       v-on:action-create="createTask($event.attrs)"
     />
-    <FormView
+    <EditFormView
       v-if="actions.isEdit"
-      dispatch-event="actionUpdate"
-      button-name="更新する"
-      v-bind="{
-        pageName: editTask.title,
-        task: editTask,
-      }"
+      v-bind:task="editTask"
       v-on:action-update="updateTask($event.id, $event.attrs)"
     />
   </article>
@@ -30,8 +22,9 @@
 <script setup>
 import { reactive, onMounted } from "vue";
 import Task from "@/models/task.js";
-import IndexView from "@/views/tasks/IndexView.vue";
-import FormView from "@/views/tasks/FormView.vue";
+import IndexView from "@/components/IndexView.vue";
+import EditFormView from "@/components/EditFormView.vue";
+import NewFormView from "@/components/NewFormView.vue";
 
 const actions = reactive({
   isIndex: true,
