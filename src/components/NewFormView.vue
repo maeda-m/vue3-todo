@@ -6,6 +6,8 @@
   />
 </template>
 
-<script setup>
+<script>
 import useFormView from "../composables/useFormView.vue";
 </script>
+
+<script setup></script>

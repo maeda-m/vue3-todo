@@ -1,25 +1,40 @@
 <template>
   <h1>{{ props.pageName }}</h1>
 
-  <input v-model="title" placeholder="タイトルを追加" />
-  <textarea v-model="description" placeholder="詳細な説明を追加"></textarea>
-
-  <button
-    v-on:click="
-      emits(props.dispatchEvent, {
-        id,
-        attrs: {
-          title,
-          description,
-        },
-      })
-    "
-  >
-    {{ props.buttonName }}
-  </button>
+  <div class="p-fluid">
+    <div class="field">
+      <label for="title">タイトルを追加</label>
+      <PrimeInputText id="title" v-model="title" />
+    </div>
+    <div class="field">
+      <label for="description">詳細な説明を追加</label>
+      <PrimeTextarea
+        id="description"
+        v-model="description"
+        v-bind:autoResize="true"
+      />
+    </div>
+    <div class="field">
+      <PrimeButton
+        v-bind:label="props.buttonName"
+        v-on:click="
+          emits(props.dispatchEvent, {
+            id,
+            attrs: {
+              title,
+              description,
+            },
+          })
+        "
+      />
+    </div>
+  </div>
 </template>
 
 <script>
+import PrimeInputText from "primevue/inputtext";
+import PrimeTextarea from "primevue/textarea";
+
 const AVAILABLE_EMITS = ["actionCreate", "actionUpdate"];
 </script>
 
@@ -57,3 +72,9 @@ const props = defineProps({
 
 const { id, title, description } = unref(props.task);
 </script>
+
+<style>
+.field {
+  padding: 0.5rem;
+}
+</style>

@@ -2,14 +2,16 @@
   <useFormView
     dispatch-event="actionUpdate"
     button-name="更新する"
-    v-bind:pageName="task.title"
+    v-bind:pageName="task.title || 'タスクの編集'"
     v-bind:task="task"
   />
 </template>
 
-<script setup>
+<script>
 import useFormView from "../composables/useFormView.vue";
+</script>
 
+<script setup>
 defineProps({
   task: {
     type: Object,
