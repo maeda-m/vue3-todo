@@ -1,9 +1,12 @@
 class Task {
+  static #ID_PREFIX = "vue3-task";
+
   static all() {
     const records = [];
     for (var i = 0; i < localStorage.length; i++) {
+      const reg = new RegExp(`^${Task.#ID_PREFIX}-\\d+$`);
       const id = localStorage.key(i);
-      if (/^vue3-task-\d+$/.test(id)) {
+      if (reg.test(id)) {
         const attrs = { id };
         Object.assign(attrs, JSON.parse(localStorage.getItem(id)));
 
@@ -11,7 +14,9 @@ class Task {
       }
     }
 
-    return records;
+    return records.sort((a, b) => {
+      return a.id > b.id ? 1 : -1;
+    });
   }
 
   constructor(attrs) {
@@ -21,7 +26,7 @@ class Task {
   }
 
   get generateId() {
-    return `vue3-task-${Date.now().toString()}`;
+    return `${Task.#ID_PREFIX}-${Date.now().toString()}`;
   }
 
   save() {
