@@ -10,7 +10,7 @@
     "build-storybook": "build-storybook"
   },
   "dependencies": {
-    "primeicons": "^6.0.1",
+    "primeicons": "^5.0.0",
     "primevue": "^3.17.0",
     "vue": "^3.2.38"
   },
