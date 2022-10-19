@@ -103,10 +103,8 @@ dist
 # TernJS port file
 .tern-port
 
-# End-to-End Tests
-
-/cypress/videos/
-/cypress/screenshots/
+# Storybook
+storybook-static/
 
 # Editor directories and files
 .vscode/*
