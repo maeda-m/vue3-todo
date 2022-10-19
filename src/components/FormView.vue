@@ -39,7 +39,7 @@ const AVAILABLE_EMITS = ["actionCreate", "actionUpdate"];
 </script>
 
 <script setup>
-import { unref } from "vue";
+import { toRefs } from "vue";
 
 const emits = defineEmits(AVAILABLE_EMITS);
 const props = defineProps({
@@ -70,7 +70,7 @@ const props = defineProps({
   },
 });
 
-const { id, title, description } = unref(props.task);
+const { id, title, description } = toRefs(props.task);
 </script>
 
 <style>
