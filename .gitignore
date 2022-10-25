@@ -102,3 +102,16 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Storybook
+storybook-static/
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
